@@ -5,7 +5,6 @@ const Header = () => {
         <header id='header'>
             <img src={logo} alt="logo" />
             <h1>Investment Calculator</h1>
-
         </header>
     )
 }
