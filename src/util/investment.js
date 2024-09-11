@@ -5,27 +5,41 @@
 // - expectedReturn: The expected (annual) rate of return
 // - duration: The investment duration (time frame)
 export function calculateInvestmentResults({
-  initialInvestment,
-  annualInvestment,
-  expectedReturn,
-  duration,
+  initialInvestment = 0,
+  annualInvestment = 0,
+  expectedReturn = 0,
+  duration = 0,
 }) {
-  const annualData = [];
-  let investmentValue = initialInvestment;
+  // Ensure all input values are correctly converted to numbers
+  const initialInvestmentNum = Number(initialInvestment);
+  const annualInvestmentNum = Number(annualInvestment);
+  const expectedReturnNum = Number(expectedReturn);
+  const durationNum = Number(duration);
 
-  for (let i = 0; i < duration; i++) {
-    const interestEarnedInYear = investmentValue * (expectedReturn / 100);
-    investmentValue += interestEarnedInYear + annualInvestment;
+  // Check if any of the inputs are NaN (not a number)
+  if (isNaN(initialInvestmentNum) || isNaN(annualInvestmentNum) || isNaN(expectedReturnNum) || isNaN(durationNum)) {
+    throw new Error("Invalid input: All inputs should be valid numbers.");
+  }
+
+  const annualData = [];
+  let investmentValue = initialInvestmentNum; // Initialize with the initial investment
+
+  for (let i = 0; i < durationNum; i++) {
+    const interestEarnedInYear = investmentValue * (expectedReturnNum / 100);
+    investmentValue += interestEarnedInYear + annualInvestmentNum;
     annualData.push({
-      year: i + 1, // year identifier
-      interest: interestEarnedInYear, // the amount of interest earned in this year
-      valueEndOfYear: investmentValue, // investment value at end of year
-      annualInvestment: annualInvestment, // investment added in this year
+      year: i + 1,
+      interest: interestEarnedInYear,
+      valueEndOfYear: investmentValue,
+      annualInvestment: annualInvestmentNum,
     });
   }
 
   return annualData;
 }
+
+
+
 
 // The browser-provided Intl API is used to prepare a formatter object
 // This object offers a "format()" method that can be used to format numbers as currency
